@@ -10,8 +10,15 @@ import {
 } from "./components/ui/card";
 import { Alert, AlertTitle } from "./components/ui/alert";
 import { AlarmCheckIcon } from "lucide-react";
+import type { DogInfo } from "./DogInfo";
+import { useOutletContext } from "react-router";
 
+
+type PropType = {
+  addDog: (newDog: DogInfo) => void;
+}
 export function HomePage() {
+  const { addDog } = useOutletContext<PropType>();
   const [imageUrl, setImageUrl] = useState(
     "https://dog.ceo/api/breeds/image/random"
   );
@@ -44,6 +51,22 @@ export function HomePage() {
     const newErroneousFields = validateForm();
 
     setErroneousFields(newErroneousFields);
+
+    //send dog
+    if (newErroneousFields.length === 0) {
+      const newDog: DogInfo = {
+      id: crypto.randomUUID(), //random id
+      url: imageUrl,          
+      title: dogTitle,
+      description: dogDescription,
+      rating: dogRating,
+      }
+
+      addDog(newDog);
+
+      //clear 
+      resetStates();
+    };
   }
 
   function validateForm() {
@@ -187,6 +210,8 @@ export function HomePage() {
     </div>
   );
 }
+
+//export default HomePage;
 
 export function DogNote() {
   return (
