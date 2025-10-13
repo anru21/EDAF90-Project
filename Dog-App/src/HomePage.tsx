@@ -11,12 +11,11 @@ import {
 import { Alert, AlertTitle } from "./components/ui/alert";
 import { AlarmCheckIcon } from "lucide-react";
 import type { DogInfo } from "./DogInfo";
-import { useOutletContext } from "react-router";
-
+import { useNavigate, useOutletContext } from "react-router";
 
 type PropType = {
   addDog: (newDog: DogInfo) => void;
-}
+};
 export function HomePage() {
   const { addDog } = useOutletContext<PropType>();
   const [imageUrl, setImageUrl] = useState(
@@ -26,6 +25,8 @@ export function HomePage() {
   const [dogDescription, setDogDescription] = useState("");
   const [dogRating, setDogRating] = useState(0);
   const [erroneousFields, setErroneousFields] = useState<string[]>([]);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchImage();
@@ -55,18 +56,20 @@ export function HomePage() {
     //send dog
     if (newErroneousFields.length === 0) {
       const newDog: DogInfo = {
-      id: crypto.randomUUID(), //random id
-      url: imageUrl,          
-      title: dogTitle,
-      description: dogDescription,
-      rating: dogRating,
-      }
+        id: crypto.randomUUID(), //random id
+        url: imageUrl,
+        title: dogTitle,
+        description: dogDescription,
+        rating: dogRating,
+      };
 
       addDog(newDog);
 
-      //clear 
+      //clear
+      //fetchImage();
       resetStates();
-    };
+      navigate(`/FavoritePage/dog/${newDog.id}`);
+    }
   }
 
   function validateForm() {
