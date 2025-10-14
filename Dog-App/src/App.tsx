@@ -1,7 +1,5 @@
 import { useState } from "react";
 import type { DogInfo } from "./DogInfo";
-import FavoritePage from "./FavoritePage";
-import { HomePage } from "./HomePage";
 import {
   NavigationMenu,
   NavigationMenuContent,
@@ -20,6 +18,9 @@ function App() {
 
   function addDog(newDog: DogInfo){
     setFavorites([...favorites, newDog]);
+  }
+  function removeDog(dogId: string){
+    setFavorites(favorites.filter((d: DogInfo) => d.id !== dogId));
   }
 
   return (
@@ -42,7 +43,7 @@ function App() {
 
         </NavigationMenuList>
       </NavigationMenu>
-      <Outlet context={{ favorites, addDog: addDog }} />
+      <Outlet context={{ favorites, addDog: addDog, removeDog: removeDog }} />
     </div>
   );
 }

@@ -1,35 +1,25 @@
 import type { DogInfo } from "./DogInfo"
 import { Button } from "./components/ui/button";
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "./components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "./components/ui/card";
 import ReactStars from "react-stars";
 import { useOutletContext } from "react-router";
 
 
-type PropsType = { favorites: DogInfo[] }
+type PropsType = { favorites: DogInfo[], removeDog: (id: string) => void }
 function FavoritePage(){
 
-    const { favorites } = useOutletContext<PropsType>();
+    const { favorites, removeDog } = useOutletContext<PropsType>();
 
     return (
         <>
         <Card className="w-full p3">
             {cardHead}
             <CardContent>
-                {favorites.map((dog) => (
+                {favorites.map((dog: DogInfo) => (
                     <DogCard
-                        key = {dog.id}
-                        id = {dog.id}
-                        url={dog.url}
-                        title={dog.title}
-                        description={dog.description}
-                        rating={dog.rating}
+                        key={dog.id}
+                        dog={dog}
+                        onRemove={() => removeDog(dog.id)}
                     />
                 ))
                 }                
@@ -40,33 +30,33 @@ function FavoritePage(){
 }
 
 function DogCard({
-    id,
-    url, 
-    title,
-    description,
-    rating,
-}: DogInfo) {
+    dog,
+    onRemove,
+}: { dog: DogInfo; onRemove: () => void }) {
     return (
         <Card>
             <img
-              src={url}
-              alt={title}
+              src={dog.url}
+              alt={dog.title}
               className="object-cover mb-1"
             />
 
             <CardHeader>
                 <CardTitle>
-                    {title}
+                    {dog.title}
                 </CardTitle>
             </CardHeader>
             <CardContent>
                 <ReactStars //finns nog en bättre
                     count={5} 
                     size={30}
-                    value={rating}
+                    value={dog.rating}
                     className=""
                 />
-                {description}
+                {dog.description}
+                <div className="mt-3">
+                  <Button variant="destructive" onClick={onRemove}>Ta bort</Button>
+                </div>
             </CardContent>
         </Card>
 
