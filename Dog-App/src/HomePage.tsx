@@ -92,6 +92,22 @@ export function HomePage() {
     setDogRating(newRating);
   }
 
+  function getBreedFromUrl(imageUrl: string): string {
+    try {
+      const url = new URL(imageUrl);
+      const parts = url.pathname.split("/");
+      const breedsIdx = parts.indexOf("breeds");
+      if (breedsIdx >= 0 && parts.length > breedsIdx + 1) {
+        const folder = parts[breedsIdx + 1]; 
+        const words = folder.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1));
+        return words.join(" ");
+      }
+    } catch (_) {
+     
+    }
+    return "Okänd";
+  }
+
   const cardHead = (
     <CardHeader>
       <CardTitle>Spara hund</CardTitle>
@@ -116,6 +132,9 @@ export function HomePage() {
               alt="Random Dog"
               className="object-cover mb-1"
             />
+          </div>
+          <div className="text-center mt-2">
+            <span className="text-sm text-gray-600">Ras: {getBreedFromUrl(imageUrl)}</span>
           </div>
           <Button
             onClick={fetchImage}

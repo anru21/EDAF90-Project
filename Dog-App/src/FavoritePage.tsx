@@ -29,10 +29,27 @@ function FavoritePage(){
     );
 }
 
+function getBreedFromUrl(imageUrl: string): string {
+    try {
+        const url = new URL(imageUrl);
+        const parts = url.pathname.split("/");
+        const breedsIdx = parts.indexOf("breeds");
+        if (breedsIdx >= 0 && parts.length > breedsIdx + 1) {
+            const folder = parts[breedsIdx + 1]; 
+            const words = folder.split("-").map((w) => w.charAt(0).toUpperCase() + w.slice(1));
+            return words.join(" ");
+        }
+    } catch (_) {
+        
+    }
+    return "Okänd";
+}
+
 function DogCard({
     dog,
     onRemove,
 }: { dog: DogInfo; onRemove: () => void }) {
+    const breedLabel = getBreedFromUrl(dog.url);
     return (
         <Card>
             <img
@@ -47,6 +64,7 @@ function DogCard({
                 </CardTitle>
             </CardHeader>
             <CardContent>
+                <div className="text-sm text-gray-600 mb-2">Ras: {breedLabel}</div>
                 <ReactStars //finns nog en bättre
                     count={5} 
                     size={30}
