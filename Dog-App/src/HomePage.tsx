@@ -119,10 +119,6 @@ export function HomePage() {
 
   return (
     <div className="flex flex-col items-center min-h-screen bg-neutral-100 p-8">
-      <h1 className="text-6xl font-extrabold mb-8 text-center">
-        The dog generator
-      </h1>
-
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full max-w-6xl items-start">
         {/* Left side: image and button */}
         <div className="flex flex-col justify-between text-gray-800 p-6 bg-white rounded-xl shadow-md h-fit">
